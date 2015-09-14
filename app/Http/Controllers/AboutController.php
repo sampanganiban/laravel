@@ -16,7 +16,28 @@ class AboutController extends Controller
      */
     public function index()
     {
-        //
+        
+        // Create some data
+        $title    = 'About page';
+        $metaDesc = 'Learn more about us';
+        $staff    = [
+                        ['name' => 'One', 'age'   => 34], 
+                        ['name' => 'Two', 'age'   => 17], 
+                        ['name' => 'Three']
+                    ];
+
+        $comments = [
+                        ['heading' => 'Great Product', 'comment'  => 'I love this product!'],
+                        ['heading' => 'Hello', 'comment' => 'Text']
+                    ];
+
+        return view('about.index')->with([
+            'title'    => $title,
+            'metaDesc' => $metaDesc,
+            'staff'    => $staff,
+            'comments' => $comments
+        ]);
+
     }
 
     /**
@@ -26,7 +47,8 @@ class AboutController extends Controller
      */
     public function create()
     {
-        //
+        // Return a view
+        return view('about.create');
     }
 
     /**

@@ -15,26 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('about', function() {
-
-	// Create some data
-	$title    = 'About page';
-	$metaDesc = 'Learn more about us';
-	$staff    = [
-					['name' => 'One', 'age'   => 34], 
-					['name' => 'Two', 'age'   => 17], 
-					['name' => 'Three']
-				];
-
-	$comments = [
-					['heading' => 'Great Product', 'comment'  => 'I love this product!'],
-					['heading' => 'Hello', 'comment' => 'Text']
-				];
-
-	return view('about')->with([
-		'title'    => $title,
-		'metaDesc' => $metaDesc,
-		'staff'    => $staff,
-		'comments' => $comments
-	]);
-});
+Route::get('about', 'AboutController@index');
+Route::get('about/create', 'AboutController@create');
