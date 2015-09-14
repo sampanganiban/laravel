@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>About Us</title>
-</head>
-<body>
+@extends('layouts.master')
+
+@section('title', $title)
+@section('meta-desc', $metaDesc)
+
+@section('content')
 	
-</body>
-</html>
+	<h1>About page</h1>
+	
+	<ul>
+		@foreach($staff as $staffMember)
+			<li>{{ $staffMember['name'] }} is {{ $staffMember['age'] }} years old</li>
+		@endforeach
+	</ul>
+
+@endsection
+
+@section('footer')
+
+	@parent 
+		
+	<ul>
+		<li>Phone: 123456789</li>
+	</ul>
+
+@endsection
