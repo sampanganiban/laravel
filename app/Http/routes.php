@@ -22,13 +22,19 @@ Route::get('about', function() {
 	$metaDesc = 'Learn more about us';
 	$staff    = [
 					['name' => 'One', 'age'   => 34], 
-					['name' => 'Two', 'age'   => 25], 
-					['name' => 'Three', 'age' => 23]
+					['name' => 'Two', 'age'   => 17], 
+					['name' => 'Three']
+				];
+
+	$comments = [
+					['heading' => 'Great Product', 'comment'  => 'I love this product!'],
+					['heading' => 'Hello', 'comment' => 'Text']
 				];
 
 	return view('about')->with([
 		'title'    => $title,
 		'metaDesc' => $metaDesc,
-		'staff'    => $staff
+		'staff'    => $staff,
+		'comments' => $comments
 	]);
 });
