@@ -59,7 +59,16 @@ class AboutController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $this->validate($request, [
+            'first_name'=>'required|min:2|max:20',
+            'last_name'=>'required|min:2|max:30'
+        ]);
+
+        // Validation passed!
+
+
+        return $request;
     }
 
     /**

@@ -29,9 +29,9 @@
 
 	@forelse($comments as $comment)
 		<div>
-			{!!$comment['heading']!!}
+			{{$comment['heading']}}
 			<br>
-			{!!$comment['comment']!!}
+			{{$comment['comment']}}
 		</div>
 		
 		@empty

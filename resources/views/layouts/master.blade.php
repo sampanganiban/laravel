@@ -13,7 +13,9 @@
 	{{-- Section for the footer. We can manipulate it later if we want --}}
 	@section('footer')
 	<footer>
-		<p>Some Copyrights</p>
+		<p>Copyrights &copy; <?php echo date('Y') ?></p>
+
+
 	</footer>
 	@show
 	
