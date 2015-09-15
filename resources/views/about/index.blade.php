@@ -13,12 +13,14 @@
 	
 				@if(isset($staffMember['age']))
 					
-					@if($staffMember['age'] <= 21 ) 
+					@if($staffMember['age'] >= 21 ) 
 						Adult.
 					@else
 						Child.
 					@endif
 
+				@else
+					No age provided.
 				@endif
 
 			</li>
