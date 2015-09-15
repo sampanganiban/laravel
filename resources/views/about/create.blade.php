@@ -22,6 +22,11 @@
 			<input type="text" name="last_name" value="{{old('last_name')}}">
 			{{$errors->first('last_name')}}
 		</div>
+
+		{{-- <div>
+			<label for="age"></label>
+			<input type="date">
+		</div> --}}
 	
 		<input type="submit" value="Add New Staff">
 

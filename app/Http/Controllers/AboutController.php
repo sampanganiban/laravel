@@ -60,6 +60,7 @@ class AboutController extends Controller
     public function store(Request $request)
     {
 
+        // If it fails then it will take you back to the form
         $this->validate($request, [
             'first_name'=>'required|min:2|max:20',
             'last_name'=>'required|min:2|max:30'
@@ -67,8 +68,23 @@ class AboutController extends Controller
 
         // Validation passed!
 
+        // LONG WAY OF ADDING A NEW STAFF MEMBER
+        // Staff() represents the staff model which represents table in the database
+        // $staff = new \App\Staff();
 
-        return $request;
+        // // Grab the info from the form
+        // $staff->first_name = $request->first_name;
+        // $staff->last_name  = $request->last_name;
+        // // $staff->age        = $request->age;
+
+        // // Add to the database
+        // $staff->save();
+
+        // SHORT WAY OF ADDING A NEW STAFF MEMBER
+        \App\Staff::create($request->all());
+
+        // Takes user back to the about page
+        return redirect('about');
     }
 
     /**
