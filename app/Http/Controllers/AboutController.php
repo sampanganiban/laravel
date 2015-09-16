@@ -22,7 +22,9 @@ class AboutController extends Controller
         $title    = 'About page';
         $metaDesc = 'Learn more about us';
 
-        return view('about.index', compact('title', 'metaDesc'));
+        $allStaff = Staff::all();
+
+        return view('about.index', compact('title', 'metaDesc', 'allStaff'));
 
     }
 
@@ -67,10 +69,15 @@ class AboutController extends Controller
         // $staff->save();
 
         // SHORT WAY OF ADDING A NEW STAFF MEMBER
-        Staff::create($request->all());
+
+        // Insert a slug into the request
+        // str_slug turns whatever comes back from the request to lowercase and add hyphens
+        $request['slug'] = str_slug( $request->first_name.' '.$request->last_name );
+
+        $staffMember = Staff::create($request->all());
 
         // Takes user back to the about page
-        return redirect('about');
+        return redirect('about/'.$staffMember->slug);
     }
 
     /**
@@ -79,9 +86,16 @@ class AboutController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        // See if we can find information about the staff member
+        // findOrFail is a function that is built into any model and it will find the id when you capture it between the brackets
+        $staffMember = Staff::where('slug', $slug)->firstOrFail();
+
+        // return $staffMember;
+
+        // Compact is similar to doing 'staffMember=>$staffMember'
+        return view('about.show', compact('staffMember'));
     }
 
     /**
@@ -90,9 +104,11 @@ class AboutController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        $staffMember = Staff::where('slug', $slug)->firstOrFail();
+
+        return view('about.edit', compact('staffMember'));
     }
 
     /**

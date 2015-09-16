@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('about', 'AboutController@index');
-Route::get('about/create', 'AboutController@create');
-Route::post('about', 'AboutController@store');
+// Route::get('about', 'AboutController@index');
+// Route::get('about/create', 'AboutController@create');
+// Route::post('about', 'AboutController@store');
+// // 'about/{id}' the id is a wildcard, if anything is at the end of about/ it will capture it
+// Route::get('about/{id}', 'AboutController@show');
+
+Route::resource('about', 'AboutController');
