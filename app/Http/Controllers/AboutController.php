@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Staff;
 
 class AboutController extends Controller
 {
@@ -20,23 +21,8 @@ class AboutController extends Controller
         // Create some data
         $title    = 'About page';
         $metaDesc = 'Learn more about us';
-        $staff    = [
-                        ['name' => 'One', 'age'   => 34], 
-                        ['name' => 'Two', 'age'   => 17], 
-                        ['name' => 'Three']
-                    ];
 
-        $comments = [
-                        ['heading' => 'Great Product', 'comment'  => 'I love this product!'],
-                        ['heading' => 'Hello', 'comment' => 'Text']
-                    ];
-
-        return view('about.index')->with([
-            'title'    => $title,
-            'metaDesc' => $metaDesc,
-            'staff'    => $staff,
-            'comments' => $comments
-        ]);
+        return view('about.index', compact('title', 'metaDesc'));
 
     }
 
@@ -68,9 +54,9 @@ class AboutController extends Controller
 
         // Validation passed!
 
-        // LONG WAY OF ADDING A NEW STAFF MEMBER
-        // Staff() represents the staff model which represents table in the database
-        // $staff = new \App\Staff();
+        // // LONG WAY OF ADDING A NEW STAFF MEMBER
+        // // Staff() represents the staff model which represents table in the database
+        // $staff = new Staff();
 
         // // Grab the info from the form
         // $staff->first_name = $request->first_name;
@@ -81,7 +67,7 @@ class AboutController extends Controller
         // $staff->save();
 
         // SHORT WAY OF ADDING A NEW STAFF MEMBER
-        \App\Staff::create($request->all());
+        Staff::create($request->all());
 
         // Takes user back to the about page
         return redirect('about');

@@ -9,11 +9,13 @@
 	
 	<form action="{{ url('about') }}" method="post">
 		
+		{{-- Must be in every form otherwise laravel will reject it --}}
 		{{ csrf_field() }}
 
 		<div>
 			<label for="first_name">First Name: </label>
 			<input type="text" name="first_name" value="{{old('first_name')}}">
+			{{-- If there are mulitple rules that the input field has broken, it will give you the first error that is equivalent to the error the user has made --}}
 			{{$errors->first('first_name')}}
 		</div>
 
@@ -23,7 +25,7 @@
 			{{$errors->first('last_name')}}
 		</div>
 
-		{{-- <div>
+{{-- 		<div>
 			<label for="age"></label>
 			<input type="date">
 		</div> --}}
