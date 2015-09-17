@@ -8,4 +8,6 @@
 
 	<a href="{{ url('about/'.$staffMember->slug.'/edit') }}">Change Details</a>
 
+	<img src="/img/staff/{{ $staffMember->profile_image }}" alt="Profile image of staff member">
+
 @endsection

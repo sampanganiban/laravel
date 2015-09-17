@@ -51,10 +51,10 @@ class AboutController extends Controller
         // If it fails then it will take you back to the form
         $this->validate($request, [
             'first_name'=>'required|min:2|max:20',
-            'last_name'=>'required|min:2|max:30'
+            'last_name'=>'required|min:2|max:30',
+            'age'=>'required|between:0,130|integer',
+            'profile_image'=>'required|image|between:0,2000'
         ]);
-
-        // Validation passed!
 
         // // LONG WAY OF ADDING A NEW STAFF MEMBER
         // // Staff() represents the staff model which represents table in the database
@@ -68,13 +68,35 @@ class AboutController extends Controller
         // // Add to the database
         // $staff->save();
 
-        // SHORT WAY OF ADDING A NEW STAFF MEMBER
+        // Profile image
+        // getClientOriginalExtension grabs the original extension the user used for their image
+        $fileExtension = $request->file('profile_image')->getClientOriginalExtension();
+        
+        // Generate a new profile image name to avoid duplication
+        // Join the two together      ^ ^  
+        $fileName = 'staff-'.uniqid().'.'.$fileExtension;
+        //                             -
+        $request->file('profile_image')->move('img/staff', $fileName);
+        
+        // Grabbed the profile image and resized it
+        \Image::make('img/staff/'.$fileName)->resize(240, null, function($constrait) {
+            
+            $constrait->aspectRatio();
 
+        })->save('img/staff/'.$fileName);
+
+        // Extract the form data
+        $input = $request->all();
+
+        // Validation passed!
+
+        // SHORT WAY OF ADDING A NEW STAFF MEMBER
         // Insert a slug into the request
         // str_slug turns whatever comes back from the request to lowercase and add hyphens
-        $request['slug'] = str_slug( $request->first_name.' '.$request->last_name );
+        $input['slug'] = str_slug( $request->first_name.' '.$request->last_name );
+        $input['profile_image'] = $fileName;
 
-        $staffMember = Staff::create($request->all());
+        $staffMember = Staff::create($input);
 
         // Takes user back to the about page
         return redirect('about/'.$staffMember->slug);
@@ -118,9 +140,33 @@ class AboutController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+        
+        // Validation
+        $this->validate($request, [
+            'first_name'=>'required|min:2|max:20',
+            'last_name'=>'required|min:2|max:30',
+            'age'=>'required|between:0,130|integer'
+        ]);
+
+        // Find the user or staff member to edit where slug is equal to whatever came back from the form
+        $staffMember = Staff::where('slug', $slug)->firstOrFail();
+
+        // Makes changes to the database
+        $staffMember->first_name = $request->first_name;
+        $staffMember->last_name  = $request->last_name;
+        $staffMember->age        = $request->age;
+
+        // Referencing the existing slug and assigning to it the new slug based on changes made to the staff members name
+        $staffMember->slug = str_slug( $request->first_name.' '.$request->last_name );
+
+        // Save the changes to the database
+        $staffMember->save();
+
+        // Redirect user to the staff members page with the updated changes
+        return redirect('about/'.$staffMember->slug);
+
     }
 
     /**
@@ -134,3 +180,11 @@ class AboutController extends Controller
         //
     }
 }
+
+
+
+
+
+
+
+

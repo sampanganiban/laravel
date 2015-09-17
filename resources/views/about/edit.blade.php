@@ -8,17 +8,27 @@
 		
 		{{ csrf_field() }}
 
+		{{-- the patch method tells laravel that we are making modification --}}
+		<input type="hidden" name="_method" value="patch">
+
 		<div>
 			<label for="first_name">First Name: </label>
-			<input type="text" value="{{$staffMember->first_name}}">
+			<input type="text" name="first_name" value="{{ old('first_name') ? old('first_name') : $staffMember->first_name }}">
 			{{$errors->first('first_name')}}
 		</div>
 
 		<div>
 			<label for="last-name">Last Name: </label>
-			<input type="text" value="{{$staffMember->last_name}}">
+			<input type="text" name="last_name" value="{{ old('last_name') ? old('last_name') : $staffMember->last_name }}">
 			{{$errors->first('last_name')}}
 		</div>
+
+		<div>
+			<label for="age">Age: </label>
+			<input type="number" name="age" value="{{ old('age') ? old('age') : $staffMember->age }}" min="0" max="130" step="1">
+			{{$errors->first('age')}}
+		</div>
+	
 
 		<div>
 			<input type="submit" value="Change Details">

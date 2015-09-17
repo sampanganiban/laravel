@@ -7,7 +7,7 @@
 	<h1>Add a new Staff Member</h1>
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit!</p>
 	
-	<form action="{{ url('about') }}" method="post">
+	<form action="{{ url('about') }}" method="post" enctype="multipart/form-data">
 		
 		{{-- Must be in every form otherwise laravel will reject it --}}
 		{{ csrf_field() }}
@@ -25,10 +25,17 @@
 			{{$errors->first('last_name')}}
 		</div>
 
-{{-- 		<div>
-			<label for="age"></label>
-			<input type="date">
-		</div> --}}
+		<div>
+			<label for="age">Age: </label>
+			<input type="number" name="age" value="{{ old('age') }}" min="0" max="130" step="1">
+			{{$errors->first('age')}}
+		</div>
+
+		<div>
+			<label for="profile_image">Profile Image: </label>
+			<input type="file" name="profile_image" id="profile_image">
+			{{$errors->first('profile_image')}}
+		</div>
 	
 		<input type="submit" value="Add New Staff">
 
@@ -44,3 +51,14 @@
 	@endif --}}
 
 @endsection
+
+
+
+
+
+
+
+
+
+
+
