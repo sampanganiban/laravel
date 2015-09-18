@@ -98,7 +98,7 @@ class AboutController extends Controller
 
         $staffMember = Staff::create($input);
 
-        // Takes user back to the about page
+        // Takes user back to staff member's profile page
         return redirect('about/'.$staffMember->slug);
     }
 
@@ -147,25 +147,52 @@ class AboutController extends Controller
         $this->validate($request, [
             'first_name'=>'required|min:2|max:20',
             'last_name'=>'required|min:2|max:30',
-            'age'=>'required|between:0,130|integer'
+            'age'=>'required|between:0,130|integer',
+            'profile_image'=>'image|between:0,2000'
         ]);
 
         // Find the user or staff member to edit where slug is equal to whatever came back from the form
         $staffMember = Staff::where('slug', $slug)->firstOrFail();
 
         // Makes changes to the database
-        $staffMember->first_name = $request->first_name;
-        $staffMember->last_name  = $request->last_name;
-        $staffMember->age        = $request->age;
+        $staffMember->first_name    = $request->first_name;
+        $staffMember->last_name     = $request->last_name;
+        $staffMember->age           = $request->age;
 
         // Referencing the existing slug and assigning to it the new slug based on changes made to the staff members name
         $staffMember->slug = str_slug( $request->first_name.' '.$request->last_name );
 
-        // Save the changes to the database
-        $staffMember->save();
+        // If the user provided a new image then save that image
+        if( $request->hasFile('profile_image') ) {
 
-        // Redirect user to the staff members page with the updated changes
-        return redirect('about/'.$staffMember->slug);
+            // Change the image file name, move the image file and resize the image
+
+            // Grab the file extension of the image
+            $fileExtension = $request->file('profile_image')->getClientOriginalExtension();
+            
+            // Generate a new profile image name to avoid duplication and join the two together
+            //                            ^ ^  
+            $fileName = 'staff-'.uniqid().'.'.$fileExtension;
+            //                             -
+            $request->file('profile_image')->move('img/staff', $fileName);
+            
+            // Grabbed the profile image and resized it
+            \Image::make('img/staff/'.$fileName)->resize(240, null, function($constrait) {    
+                    $constrait->aspectRatio();
+                })->save('img/staff/'.$fileName);
+            
+                // Delete the old image
+                \File::Delete('img/staff/'.$staffMember->profile_image);
+
+                // Tell the database of the new image
+                $staffMember->profile_image = $fileName;
+            }
+
+            // Save the changes to the database
+            $staffMember->save();
+
+            // Redirect user to the staff members page with the updated changes
+            return redirect('about/'.$staffMember->slug);
 
     }
 

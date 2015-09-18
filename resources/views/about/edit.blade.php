@@ -4,7 +4,7 @@
 	
 	<h1>Edit: <em>{{$staffMember->first_name}} {{$staffMember->last_name}}</em></h1>
 
-	<form action="{{ url('about/'.$staffMember->slug) }}" method="post">
+	<form action="{{ url('about/'.$staffMember->slug) }}" method="post" enctype="multipart/form-data" novalidate>
 		
 		{{ csrf_field() }}
 
@@ -29,7 +29,13 @@
 			{{$errors->first('age')}}
 		</div>
 	
+		<img src="/img/staff/{{ $staffMember->profile_image }}" alt="Profile image of {{$staffMember->first_name}} {{$staffMember->last_name}}">	
 
+		<div>
+			<label for="profile_image">New Profile Image:  <small>(optional)</small></label>
+			<input type="file" name="profile_image">
+		</div>
+		
 		<div>
 			<input type="submit" value="Change Details">
 		</div>
